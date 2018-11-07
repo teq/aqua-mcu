@@ -138,6 +138,25 @@
 </package>
 </packages>
 </library>
+<library name="PCD8544">
+<packages>
+<package name="PCD8544_BTM">
+<description>PCD8544 with header on the bottom edge</description>
+<pad name="1" x="-7.62" y="3.81" drill="0.8" shape="square"/>
+<pad name="2" x="-5.08" y="3.81" drill="0.8"/>
+<pad name="3" x="-2.54" y="3.81" drill="0.8"/>
+<pad name="4" x="0" y="3.81" drill="0.8"/>
+<pad name="5" x="2.54" y="3.81" drill="0.8"/>
+<pad name="6" x="5.08" y="3.81" drill="0.8"/>
+<pad name="7" x="7.62" y="3.81" drill="0.8"/>
+<pad name="8" x="10.16" y="3.81" drill="0.8"/>
+<wire x1="-20.32" y1="44.45" x2="23.241" y2="44.45" width="0.127" layer="21"/>
+<wire x1="23.241" y1="44.45" x2="23.241" y2="1.27" width="0.127" layer="21"/>
+<wire x1="23.241" y1="1.27" x2="-20.32" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-20.32" y1="1.27" x2="-20.32" y2="44.45" width="0.127" layer="21"/>
+</package>
+</packages>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -331,22 +350,28 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="ARDUINO_NANO1" library="ArduinoNanoV30" package="ARDUINO_NANO" value="" x="41.91" y="46.99" smashed="yes">
-<attribute name="NAME" x="24.13" y="46.99" size="1.27" layer="21" font="vector"/>
-<attribute name="VALUE" x="24.13" y="44.45" size="1.27" layer="21" font="vector"/>
+<element name="ARDUINO_NANO1" library="ArduinoNanoV30" package="ARDUINO_NANO" value="" x="33.02" y="64.77" smashed="yes">
+<attribute name="NAME" x="15.24" y="64.77" size="1.27" layer="21" font="vector"/>
+<attribute name="VALUE" x="15.24" y="62.23" size="1.27" layer="21" font="vector"/>
 </element>
+<element name="DISP1" library="PCD8544" package="PCD8544_BTM" value="PCD8544" x="69.85" y="3.81" smashed="yes"/>
 </elements>
 <signals>
 <signal name="GND">
 <contactref element="ARDUINO_NANO1" pad="19"/>
 <contactref element="ARDUINO_NANO1" pad="14"/>
-<wire x1="54.61" y1="39.37" x2="49.53" y2="54.61" width="0" layer="19" extent="1-1"/>
+<contactref element="DISP1" pad="8"/>
+<wire x1="45.72" y1="57.15" x2="40.64" y2="72.39" width="0" layer="19" extent="1-1"/>
+<wire x1="80.01" y1="7.62" x2="45.72" y2="57.15" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="5V">
 <contactref element="ARDUINO_NANO1" pad="12"/>
 </signal>
 <signal name="VIN">
 <contactref element="ARDUINO_NANO1" pad="15"/>
+</signal>
+<signal name="VCC">
+<contactref element="DISP1" pad="6"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

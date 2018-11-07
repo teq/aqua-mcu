@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -410,6 +410,71 @@ Each pin can provide or receive a maximum of 40 mA and has an internal pull-up r
 </deviceset>
 </devicesets>
 </library>
+<library name="PCD8544">
+<packages>
+<package name="PCD8544_BTM">
+<description>PCD8544 with header on the bottom edge</description>
+<pad name="1" x="-7.62" y="3.81" drill="0.8" shape="square"/>
+<pad name="2" x="-5.08" y="3.81" drill="0.8"/>
+<pad name="3" x="-2.54" y="3.81" drill="0.8"/>
+<pad name="4" x="0" y="3.81" drill="0.8"/>
+<pad name="5" x="2.54" y="3.81" drill="0.8"/>
+<pad name="6" x="5.08" y="3.81" drill="0.8"/>
+<pad name="7" x="7.62" y="3.81" drill="0.8"/>
+<pad name="8" x="10.16" y="3.81" drill="0.8"/>
+<wire x1="-20.32" y1="44.45" x2="23.241" y2="44.45" width="0.127" layer="21"/>
+<wire x1="23.241" y1="44.45" x2="23.241" y2="1.27" width="0.127" layer="21"/>
+<wire x1="23.241" y1="1.27" x2="-20.32" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-20.32" y1="1.27" x2="-20.32" y2="44.45" width="0.127" layer="21"/>
+</package>
+</packages>
+<symbols>
+<symbol name="PCD8544">
+<description>Nokia 5110 (PCD5844) display module</description>
+<pin name="!RST" x="-17.78" y="10.16" length="middle" direction="in"/>
+<pin name="!CE" x="-17.78" y="7.62" length="middle" direction="in"/>
+<pin name="D/!C" x="-17.78" y="5.08" length="middle" direction="in"/>
+<pin name="DIN" x="-17.78" y="2.54" length="middle" direction="in"/>
+<pin name="CLK" x="-17.78" y="0" length="middle" direction="in"/>
+<pin name="VCC" x="-17.78" y="-2.54" length="middle" direction="pwr"/>
+<pin name="BL" x="-17.78" y="-5.08" length="middle" direction="in"/>
+<pin name="GND" x="-17.78" y="-7.62" length="middle" direction="pwr"/>
+<text x="-0.254" y="0.762" size="1.778" layer="94">48 x 84</text>
+<wire x1="-3.048" y1="6.604" x2="9.652" y2="6.604" width="0.254" layer="94"/>
+<wire x1="9.652" y1="6.604" x2="9.652" y2="-3.556" width="0.254" layer="94"/>
+<wire x1="9.652" y1="-3.556" x2="-3.048" y2="-3.556" width="0.254" layer="94"/>
+<wire x1="-3.048" y1="-3.556" x2="-3.048" y2="6.604" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="15.24" x2="12.7" y2="15.24" width="0.254" layer="94"/>
+<wire x1="12.7" y1="15.24" x2="12.7" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-12.7" x2="-12.7" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-12.7" x2="-12.7" y2="15.24" width="0.254" layer="94"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="PCD8544" prefix="DISP">
+<gates>
+<gate name="G$1" symbol="PCD8544" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="PCD8544_BTM">
+<connects>
+<connect gate="G$1" pin="!CE" pad="2"/>
+<connect gate="G$1" pin="!RST" pad="1"/>
+<connect gate="G$1" pin="BL" pad="7"/>
+<connect gate="G$1" pin="CLK" pad="5"/>
+<connect gate="G$1" pin="D/!C" pad="3"/>
+<connect gate="G$1" pin="DIN" pad="4"/>
+<connect gate="G$1" pin="GND" pad="8"/>
+<connect gate="G$1" pin="VCC" pad="6"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -421,6 +486,7 @@ Each pin can provide or receive a maximum of 40 mA and has an internal pull-up r
 </classes>
 <parts>
 <part name="ARDUINO_NANO1" library="ArduinoNanoV30" deviceset="ARDUINO_NANO" device=""/>
+<part name="DISP1" library="PCD8544" deviceset="PCD8544" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -431,6 +497,7 @@ Each pin can provide or receive a maximum of 40 mA and has an internal pull-up r
 <attribute name="NAME" x="30.48" y="53.34" size="1.778" layer="95"/>
 <attribute name="VALUE" x="30.48" y="50.8" size="1.778" layer="96"/>
 </instance>
+<instance part="DISP1" gate="G$1" x="114.3" y="86.36" smashed="yes"/>
 </instances>
 <busses>
 </busses>
