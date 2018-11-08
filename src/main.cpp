@@ -1,74 +1,62 @@
-#include <SPI.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_PCD8544.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
 #include <TimerOne.h>
-#include <PinChangeInterrupt.h>
+#include <ClickEncoder.h>
 
-#define ONE_WIRE_BUS 2
+#include "state.h"
+#include "rtc.h"
+#include "sensor.h"
+#include "heater.h"
+#include "ui.h"
 
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
-Adafruit_PCD8544 display = Adafruit_PCD8544(3, 4, 5);
+State state = {
+    .screen = Screen::Home,
+    .item = Item::SetTemp
+};
 
-volatile float desiredTemp = 27.0;
-float actualTemp = 0;
-uint8_t heat = 0;
+RTC rtc(state);
+Sensor sensor(state);
+Heater heater(state);
+UI ui(state);
+ClickEncoder encoder(A0, A1, -1, 1);
 
-void setHeaterPower(uint8_t value) {
-    heat = value;
-    uint16_t duty = 1024 - 1024 * (value / 255.0);
-    Timer1.setPwmDuty(9, duty);
-}
-
-void encoderClick(void) {
-    if (digitalRead(A1)) {
-        desiredTemp += 0.10;
-    } else {
-        desiredTemp -= 0.10;
-    }
+void clock1kHz() {
+    encoder.service();
+    heater.tick();
 }
 
 void setup(void) {
 
     Serial.begin(9600);
 
-    // sensors.setWaitForConversion(false);
-    sensors.begin();
+    Timer1.initialize(1000); // 1ms
+    Timer1.attachInterrupt(clock1kHz);
+    encoder.setAccelerationEnabled(true);
 
-    display.begin();
-    display.setContrast(55);
-
-    Timer1.initialize(500000);
-    Timer1.pwm(9, 1024); // off
-
-    pinMode(A0, INPUT_PULLUP);
-    pinMode(A1, INPUT_PULLUP);
-    attachPCINT(digitalPinToPCINT(A0), encoderClick, FALLING);
+    rtc.setup();
+    sensor.setup();
+    heater.setup();
+    ui.setup();
 
 }
 
 void loop(void) {
 
-    // delay(500);
+    delay(50);
 
-    sensors.requestTemperatures();
-    actualTemp = sensors.getTempCByIndex(0);
+    rtc.readTime();
 
-    if (actualTemp < desiredTemp) {
-        setHeaterPower(127);
-    } else {
-        setHeaterPower(0);
+    if (sensor.readTemperature()) {
+        if (state.actualTemp < state.desiredTemp) {
+            heater.setPower(50);
+        } else {
+            heater.setPower(0);
+        }
     }
 
-    display.clearDisplay();
-    display.print("Des:");
-    display.println(desiredTemp);
-    display.print("Act: ");
-    display.println(actualTemp);
-    display.print("Heat: ");
-    display.println(heat);
-    display.display();
+    ui.render();
+
+
+    // int16_t encVal = encoder.getValue();
+    // display.print("Enc:");
+    // display.println(encVal);
 
 }
