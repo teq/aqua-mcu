@@ -1,5 +1,4 @@
 #include <TimerOne.h>
-#include <ClickEncoder.h>
 
 #include "state.h"
 #include "rtc.h"
@@ -8,7 +7,7 @@
 #include "ui.h"
 
 State state = {
-    .screen = Screen::Home,
+    .screen = Screen::Menu,
     .item = Item::SetTemp
 };
 
@@ -16,20 +15,18 @@ RTC rtc(state);
 Sensor sensor(state);
 Heater heater(state);
 UI ui(state);
-ClickEncoder encoder(A0, A1, -1, 1);
 
 void clock1kHz() {
-    encoder.service();
-    heater.tick();
+    ui.clock1kHz();
+    heater.clock();
 }
 
 void setup(void) {
 
     Serial.begin(9600);
 
-    Timer1.initialize(1000); // 1ms
+    Timer1.initialize(1000); // 1ms period (1kHz)
     Timer1.attachInterrupt(clock1kHz);
-    encoder.setAccelerationEnabled(true);
 
     rtc.setup();
     sensor.setup();
@@ -52,11 +49,8 @@ void loop(void) {
         }
     }
 
+    ui.react();
+
     ui.render();
-
-
-    // int16_t encVal = encoder.getValue();
-    // display.print("Enc:");
-    // display.println(encVal);
 
 }

@@ -7,14 +7,23 @@ class UI {
 
     public:
 
-        UI(const State& appState);
+        UI(State& appState);
 
         void setup(void);
 
+        void clock1kHz(void);
+
         void render(void);
+
+        void react(void);
 
     private:
 
-        const State& state;
+        void renderHome(void);
+        void reactHome(void);
+        void renderMenu(void);
+        void reactMenu(void);
+
+        State& state;
 
 };

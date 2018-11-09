@@ -45,7 +45,9 @@ enum Screen {
 };
 
 enum Item {
+    // *** Menu screen ***
     SetTemp,
-    SetLight,
-    SetTime
+    SetLamps,
+    SetClock,
+    MenuBack
 };

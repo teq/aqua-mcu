@@ -16,7 +16,7 @@ void Heater::setup(void) {
     setPower(0);
 }
 
-void Heater::tick(void) {
+void Heater::clock(void) {
 
     if (endTick < tickCount) {
         digitalWrite(HEATER_PIN, HIGH); // off

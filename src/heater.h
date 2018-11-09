@@ -14,8 +14,8 @@ class Heater {
         /** Setup PWM pin */
         void setup(void);
 
-        /** Trigger PWM tick */
-        void tick(void);
+        /** Trigger PWM clock tick */
+        void clock(void);
 
         /**
          * Set heater power
